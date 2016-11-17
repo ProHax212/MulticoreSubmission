@@ -12,12 +12,14 @@ public class FineGrainedPriorityQueue {
 
     // Maximum length of the heap
     // If this is too high and a lot of inserts can occur concurrently, then starvation could happen
-    private static final int MAX_LENGTH = 50;
+    private static final int MAX_LENGTH = 100;
 
     private Node[] heap;
     private ReentrantLock heapLock;
     int nextIndex;
 
+    // Constructor for the fine grained priority queue
+    // Initialize every node to empty
     public FineGrainedPriorityQueue(){
         heap = new Node[MAX_LENGTH+1];
         for(int i = 0; i < MAX_LENGTH+1; i++){
@@ -41,7 +43,7 @@ public class FineGrainedPriorityQueue {
 
         nextIndex += 1;
         heap[index].lock(); heapLock.unlock();
-        heap[index].priority = priority;
+        heap[index].priority =  priority;
         heap[index].tag = Thread.currentThread().getId();
         heap[index].unlock();
 
@@ -155,11 +157,6 @@ public class FineGrainedPriorityQueue {
         return priority;
     }
 
-    // Helper methods to get indecies
-    private int getParent(int index){return index/2;}
-    private int getLeft(int index){return index*2;}
-    private int getRight(int index){return (index*2) + 1;}
-
     // Swap the values of the two nodes
     private void swapNodes(Node one, Node two){
         Node temp = new Node(one.value, one.priority, one.tag);
@@ -222,7 +219,8 @@ public class FineGrainedPriorityQueue {
     public String toString(){
         String returnString = "";
         for(Node node : heap){
-            returnString += node.priority + ", ";
+            if(node.tag != -2L) returnString += node.priority + ", ";
+            else returnString += "EMPTY, ";
         }
 
         return returnString;

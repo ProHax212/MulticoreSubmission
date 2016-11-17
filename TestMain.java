@@ -1,5 +1,4 @@
 import java.util.Random;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -16,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 public class TestMain {
 
     public static void main(String[] args) {
-        int numInserters = 100; int numDeleters = 5;
-        int numInsert = 1000; int numDelete = 1000;
+        int numInserters = 10; int numDeleters = 10;
+        int numInsert = 1000; int numDelete = 100;
 
         //fineGrainedTest(numInserters, numInsert, numDeleters, numDelete);
         lockFreeTest(numInserters, numInsert, numDeleters, numDelete);
@@ -62,8 +61,8 @@ public class TestMain {
 
         }
 
-        System.out.println(fineGrainedPriorityQueue.verify());
         System.out.println(fineGrainedPriorityQueue);
+        System.out.println("VALID_STATE: " + fineGrainedPriorityQueue.verify());
     }
 
     private static void lockFreeTest(int numInserters, int numInsert, int numDeleters, int numDelete){
@@ -104,7 +103,7 @@ public class TestMain {
         }catch (InterruptedException e){}
 
         System.out.println(lockFreePriorityQueue);
-        System.out.println(lockFreePriorityQueue.verify());
+        System.out.println("VALID_STATE: " + lockFreePriorityQueue.verify());
     }
 
 }
